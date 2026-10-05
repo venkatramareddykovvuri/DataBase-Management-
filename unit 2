@@ -1,0 +1,225 @@
+CREATE DATABASE GameDB;
+USE GameDB;
+
+CREATE TABLE Games (
+    game_id INT PRIMARY KEY,
+    game_name VARCHAR(30)
+);
+
+INSERT INTO Games VALUES
+(1,'Cricket'),
+(2,'Football'),
+(3,'Chess'),
+(4,'Badminton'),
+(5,'Tennis');
+
+
+CREATE TABLE Players (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Players VALUES
+(101,'Virat',1,35,12,95),
+(102,'Rohit',1,37,15,90),
+(103,'Gill',1,25,6,80),
+(104,'Pant',1,27,7,85),
+(105,'Bumrah',1,31,10,92),
+
+(201,'Messi',2,38,18,98),
+(202,'Ronaldo',2,40,20,99),
+(203,'Neymar',2,33,15,90),
+(204,'Mbappe',2,27,9,88),
+(205,'Haaland',2,25,7,86),
+
+(301,'Magnus',3,35,20,99),
+(302,'Praggnanandhaa',3,20,8,92),
+(303,'Gukesh',3,19,7,95),
+(304,'Arjun',3,26,10,90),
+(305,'Anand',3,56,30,98),
+
+(401,'Sindhu',4,31,12,94),
+(402,'Saina',4,36,15,90),
+(403,'Lakshya',4,24,7,88),
+(404,'Srikanth',4,33,11,85),
+(405,'Prannoy',4,32,10,87),
+
+(501,'Alcaraz',5,23,7,94),
+(502,'Sinner',5,25,8,96),
+(503,'Djokovic',5,39,20,99),
+(504,'Nadal',5,40,22,98),
+(505,'Zverev',5,29,11,90);
+
+
+CREATE TABLE Cricket (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Cricket
+SELECT * FROM Players WHERE game_id=1;
+
+
+CREATE TABLE Football (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Football
+SELECT * FROM Players WHERE game_id=2;
+
+
+CREATE TABLE Chess (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Chess
+SELECT * FROM Players WHERE game_id=3;
+
+
+CREATE TABLE Badminton (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Badminton
+SELECT * FROM Players WHERE game_id=4;
+
+
+CREATE TABLE Tennis (
+    player_id INT PRIMARY KEY,
+    player_name VARCHAR(30),
+    game_id INT,
+    age INT,
+    experience INT,
+    achievements INT,
+    FOREIGN KEY (game_id) REFERENCES Games(game_id)
+);
+
+INSERT INTO Tennis
+SELECT * FROM Players WHERE game_id=5;
+
+
+-- DISPLAY ALL PLAYERS
+
+SELECT * FROM Cricket;
+SELECT * FROM Football;
+SELECT * FROM Chess;
+SELECT * FROM Badminton;
+SELECT * FROM Tennis;
+
+
+-- TOP 5 PLAYERS OF EACH GAME
+
+SELECT * FROM Cricket
+ORDER BY achievements;
+
+SELECT * FROM Football
+ORDER BY achievements;
+
+SELECT * FROM Chess
+ORDER BY achievements;
+
+SELECT * FROM Badminton
+ORDER BY achievements;
+
+SELECT * FROM Tennis
+ORDER BY achievements;
+
+
+-- 5 PLAYERS WITH LOWER AGE
+
+SELECT player_id,player_name,age
+FROM Players
+WHERE age IN
+(
+    SELECT age FROM Players
+    ORDER BY age
+)
+ORDER BY age;
+
+
+-- TWO HIGHLY ACHIEVED PLAYERS FROM EACH GAME
+
+SELECT player_id,player_name,achievements
+FROM Cricket
+WHERE achievements >=
+(
+    SELECT MIN(achievements)
+    FROM
+    (
+        SELECT achievements FROM Cricket
+        ORDER BY achievements
+    ) AS C
+);
+
+SELECT player_id,player_name,achievements
+FROM Football
+ORDER BY achievements;
+
+SELECT player_id,player_name,achievements
+FROM Chess
+ORDER BY achievements;
+
+SELECT player_id,player_name,achievements
+FROM Badminton
+ORDER BY achievements;
+
+SELECT player_id,player_name,achievements
+FROM Tennis
+ORDER BY achievements;
+
+
+-- UNION OPERATION
+
+SELECT player_name FROM Cricket
+UNION
+SELECT player_name FROM Football;
+
+
+-- INTERSECTION OPERATION
+
+SELECT player_name
+FROM Cricket
+WHERE player_name IN
+(
+    SELECT player_name
+    FROM Football
+);
+
+
+-- DIFFERENCE OPERATION
+
+SELECT player_name
+FROM Cricket
+WHERE player_name NOT IN
+(
+    SELECT player_name
+    FROM Football
+);
