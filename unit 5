@@ -1,0 +1,26 @@
+create database pharmaceutical;
+use pharmaceutical;
+create table tablets(
+tablet_id int primary key,
+tablet_name varchar(50),
+tablet_weight varchar(100),
+disease_cured Varchar(30),
+symptoms varchar(25)
+);
+insert into tablets
+values(2018,"paracetamol","500mg","fever","headache"),
+(1019,"Amoxicillin","550mg","Bacterial infections","sorethroat"),
+(1085,"cetrizine","10mg","allergies","sneezing"),
+(1120,"pantroprazole","40mg","gastric Ulcer","stomach pain"),
+(1201,"aspirin","75mg","heart disease prevention","chest pain"),
+(1390,"DIclofenac","50mg","arithris","swelling"),
+(1101,"Flucanzole","150mg","Fungal infections","Itching"),
+(1001,"Azithromycin","501mg","infections","cough"),
+(4000,"losartan","50mg","high blood pressure","dizziness"),
+(1111,"metformin","508mg","Diabetes","Increased thrist");
+select * from tablets;
+update tablets set symptoms="joint pain" where tablet_id=1390;
+update tablets set tablet_weight="100mg" where tablet_id=1085;
+select * from tablets where tablet_id=4000;
+select tablet_name,tablet_weight from tablets ;
+delete from tablets where tablet_id =4000;
